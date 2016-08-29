@@ -3,8 +3,6 @@ Git is free software.
 Git is a distributed version control system.
 Git is free software.
 
-Git is a
-
 常用：
 
 远程服务器	SSH：git@github.com:NeusoftTest/learngit.git

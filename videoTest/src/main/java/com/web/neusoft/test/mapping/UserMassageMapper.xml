@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.neusoft.test.dao.UserMassageMapper" >
+  <resultMap id="BaseResultMap" type="com.web.neusoft.test.model.UserMassage" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="USERNAME" property="username" jdbcType="VARCHAR" />
+    <result column="identifier" property="identifier" jdbcType="VARCHAR" />
+    <result column="Memberflag" property="memberflag" jdbcType="CHAR" />
+    <result column="insterest" property="insterest" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, USERNAME, identifier, Memberflag, insterest, sex
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_massage
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_massage
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.web.neusoft.test.model.UserMassage" >
+    insert into user_massage (id, USERNAME, identifier, 
+      Memberflag, insterest, sex
+      )
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{identifier,jdbcType=VARCHAR}, 
+      #{memberflag,jdbcType=CHAR}, #{insterest,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.web.neusoft.test.model.UserMassage" >
+    insert into user_massage
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="username != null" >
+        USERNAME,
+      </if>
+      <if test="identifier != null" >
+        identifier,
+      </if>
+      <if test="memberflag != null" >
+        Memberflag,
+      </if>
+      <if test="insterest != null" >
+        insterest,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="identifier != null" >
+        #{identifier,jdbcType=VARCHAR},
+      </if>
+      <if test="memberflag != null" >
+        #{memberflag,jdbcType=CHAR},
+      </if>
+      <if test="insterest != null" >
+        #{insterest,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.web.neusoft.test.model.UserMassage" >
+    update user_massage
+    <set >
+      <if test="username != null" >
+        USERNAME = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="identifier != null" >
+        identifier = #{identifier,jdbcType=VARCHAR},
+      </if>
+      <if test="memberflag != null" >
+        Memberflag = #{memberflag,jdbcType=CHAR},
+      </if>
+      <if test="insterest != null" >
+        insterest = #{insterest,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.web.neusoft.test.model.UserMassage" >
+    update user_massage
+    set USERNAME = #{username,jdbcType=VARCHAR},
+      identifier = #{identifier,jdbcType=VARCHAR},
+      Memberflag = #{memberflag,jdbcType=CHAR},
+      insterest = #{insterest,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

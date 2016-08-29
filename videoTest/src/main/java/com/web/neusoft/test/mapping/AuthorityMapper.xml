@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.neusoft.test.dao.AuthorityMapper" >
+  <resultMap id="BaseResultMap" type="com.web.neusoft.test.model.Authority" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="modify" property="modify" jdbcType="CHAR" />
+    <result column="view" property="view" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, pid, modify, view
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from authority_tab
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from authority_tab
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.web.neusoft.test.model.Authority" >
+    insert into authority_tab (id, pid, modify, 
+      view)
+    values (#{id,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{modify,jdbcType=CHAR}, 
+      #{view,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.web.neusoft.test.model.Authority" >
+    insert into authority_tab
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="modify != null" >
+        modify,
+      </if>
+      <if test="view != null" >
+        view,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="modify != null" >
+        #{modify,jdbcType=CHAR},
+      </if>
+      <if test="view != null" >
+        #{view,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.web.neusoft.test.model.Authority" >
+    update authority_tab
+    <set >
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="modify != null" >
+        modify = #{modify,jdbcType=CHAR},
+      </if>
+      <if test="view != null" >
+        view = #{view,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.web.neusoft.test.model.Authority" >
+    update authority_tab
+    set pid = #{pid,jdbcType=INTEGER},
+      modify = #{modify,jdbcType=CHAR},
+      view = #{view,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

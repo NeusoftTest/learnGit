@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+	<!-- 引入配置文件  -->
+	<bean name="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+				<value>classpath:redis.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 创建jdbc数据源  -->
+	<bean name="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	 	<property name="driverClassName" value="${drivername}"/>
+	 	<property name="url" value="${url}"/>
+	 	<property name="username" value="${username}"/>
+	 	<property name="password" value="${password}"/>
+	 </bean>
+	
+	<!-- redis集成 -->
+	<bean id="jedisConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxTotal"  value="${redis.maxTotal}" />
+		<property name="maxIdle" value="${redis.maxIdle}" /> 
+	    <property name="timeBetweenEvictionRunsMillis" value="${redis.timeBetweenEvictionRunsMillis}" />
+        <property name="minEvictableIdleTimeMillis" value="${redis.minEvictableIdleTimeMillis}" />
+        <property name="testOnBorrow" value="${redis.testOnBorrow}" />
+	</bean>
+	
+	<bean id="jedisPool" class="redis.clients.jedis.JedisPool" destroy-method="destroy">
+		<constructor-arg ref="jedisConfig"/>
+		<constructor-arg value="{redis.host}"/>
+		<constructor-arg type="int" value="${redis.port}" />
+	</bean>
+	
+	<bean id="connectionConfig" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<property name="hostName" value="${redis.host}"/>
+		<property name="port" value="${redis.port}"/>
+		<property name="password" value="${redis.pass}"/>
+		<property name="poolConfig" ref="jedisConfig"/>
+	</bean>
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+	  <property name="connectionFactory" ref="connectionConfig"/>
+	</bean>
+	
+	<!-- DAO层接口所在包，Spring会自动查找其下的类   -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.web.neusoft.test.dao"/>
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+	
+	<!-- 事务管理  -->
+	<bean id="transationManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<!-- 创建sqlSessionFactory，同时指定数据源  -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="mapperLocations" value="classpath:com/web/neusoft/test/mapping/*.xml"/>
+		<property name="typeAliasesPackage" value="com.web.neusoft.test.model"></property>
+	</bean>
+	
+</beans>

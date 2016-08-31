@@ -25,4 +25,8 @@ public class VideoAction {
 		model.addAttribute("video", video);
 		return "index";
 	}
+	
+	public String someMessage(){
+		return "";
+	}
 }
